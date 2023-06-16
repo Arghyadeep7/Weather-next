@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 
 export const getServerSideProps = async() =>{
 
+  const locationKey = process.env.LOCATION_KEY;
+
   const key = process.env.API_KEY;
 
-  const {latitude,longitude} = await fetch("https://ipapi.co/json").then(response => response.json());
+  const location = await fetch("https://api.ipregistry.co/?key="+locationKey).then(response => response.json());
+
+  const {latitude, longitude} = location.location;
 
   const response = await fetch("https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude
                                 + "&appid=" + key + "&units=metric").then(res=>res.json());
